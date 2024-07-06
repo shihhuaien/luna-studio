@@ -1,7 +1,7 @@
 const { default: axios } = require("axios")
 
 
-const API_KEY = process.env.NEXT_PUBLIC_STRAPI_API_KEY
+const API_KEY = process.env.NEXT_PUBLIC_STRAPI_API_KEY_PRODUCTION
 
 const axiosClient = axios.create({
     baseURL: 'https://eyelash-appointment-booking-admin.onrender.com/api',
