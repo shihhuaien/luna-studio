@@ -6,6 +6,7 @@ import BookingList from './_components/BookingList';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 import GlobalApi from '@/app/_utils/GlobalApi';
 
+
 function MyBooking() {
     const { user } = useKindeBrowserClient();
 
@@ -38,19 +39,27 @@ function MyBooking() {
             <Tabs defaultValue="upcoming" className="w-full mt-5">
                 <TabsList className="w-full justify-start">
                     <TabsTrigger value="upcoming">即將開始</TabsTrigger>
-                    <TabsTrigger value="expired">過期</TabsTrigger>
+                    <TabsTrigger value="expired">完成/過期</TabsTrigger>
                 </TabsList>
                 <TabsContent value="upcoming">
-                    <BookingList bookingList={filterUserBooking('upcoming')}
-                        updateRecord={() => getUserBookingList()}
-                        expired={false}
-                    />
+                    {filterUserBooking('upcoming').length > 0 ? (
+                        <BookingList bookingList={filterUserBooking('upcoming')}
+                            updateRecord={() => getUserBookingList()}
+                            expired={false}
+                        />
+                    ) : (
+                        <h2 style={{ padding: '20px' }}>還沒有預約~快去預約吧 ♫</h2>
+                    )}
                 </TabsContent>
                 <TabsContent value="expired">
-                    <BookingList bookingList={filterUserBooking('expired')}
-                        updateRecord={() => getUserBookingList()}
-                        expired={true}
-                    />
+                    {filterUserBooking('expired').length > 0 ? (
+                        <BookingList bookingList={filterUserBooking('expired')}
+                            updateRecord={() => getUserBookingList()}
+                            expired={true}
+                        />
+                    ) : (
+                        <h2 style={{ padding: '20px' }}>目前沒有完成的預約哦 ♫</h2>
+                    )}
                 </TabsContent>
             </Tabs>
 
