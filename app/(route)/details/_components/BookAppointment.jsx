@@ -18,7 +18,13 @@ import GlobalApi from '@/app/_utils/GlobalApi'
 import { toast } from 'sonner'
 
 function BookAppointment({ eyelasher }) {
-    const [date, setDate] = useState(new Date());
+    // 獲取今天的日期
+    const today = new Date();
+    // 將日期加一天
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+    const [date, setDate] = useState(tomorrow);
     const [timeSlot, setTimeSlot] = useState();
     const [selectedTimeSlot, setSelectedTimeSlot] = useState();
     const [note, setNote] = useState();
@@ -154,6 +160,20 @@ function BookAppointment({ eyelasher }) {
                                                 ${isTimeSlotBooked(item.time) ? 'bg-gray-300 cursor-not-allowed' : 'hover:bg-primary hover:text-white'}
                                                 rounded-full ${item.time == selectedTimeSlot && 'bg-primary text-white'}`}>{item.time}</h2>
                                         ))}
+                                    </div>
+                                    <div className='grid grid-cols-1 gap-2 
+                                                    rounded-lg p-3'>
+                                        點選「送出」系統會寄送預約email給您<br />
+                                        請於兩天內完成訂金匯款，以保留預約資格
+                                    </div>
+                                    <div className='grid grid-cols-1 gap-2 
+                                                    rounded-lg p-3'>
+
+                                    </div>
+                                    <div className='grid grid-cols-1 gap-2 
+                                                    rounded-lg p-3'>
+                                        ♫ 匯款資訊詳見email<br />
+                                        ♫ 若需取消預約，可於「我的預約」進行取消
                                     </div>
                                 </div>
                             </div>
