@@ -64,28 +64,46 @@ function BookAppointment({ eyelasher }) {
         setTimeSlot(timeList)
     }
 
-    const fetchBookedSlots = () => {
+    const fetchBookedSlots = async () => {
         console.log("Fetching all booked slots");
 
+        const fetchPage = async (page) => {
+            try {
+                const response = await GlobalApi.getAllBookings({
+                    'pagination[page]': page,
+                    'pagination[pageSize]': 100
+                });
+                console.log("API response:", response);
+                return response.data;
+            } catch (error) {
+                console.error("Error fetching booked slots:", error);
+                return { data: [], meta: { pagination: { pageCount: 0 } } };
+            }
+        };
 
-        GlobalApi.getAllBookings().then(response => {
-            console.log("API response:", response);
+        let allData = [];
+        let currentPage = 1;
+        let totalPages = 1;
 
-            const bookedSlotsForDay = response.data.data.filter(booking => {
-                const bookingDate = new Date(booking.attributes.Date);
-                const selectedDate = new Date(date);
+        do {
+            const response = await fetchPage(currentPage);
+            allData = [...allData, ...response.data];
+            currentPage += 1;
+            totalPages = response.meta.pagination.pageCount;
+        } while (currentPage <= totalPages);
 
-                // 比較 UTC 日期
-                return bookingDate.toISOString().split('T')[0] === selectedDate.toISOString().split('T')[0];
-            }).map(booking => booking.attributes.Time);
+        const bookedSlotsForDay = allData.filter(booking => {
+            const bookingDate = new Date(booking.attributes.Date);
+            const selectedDate = new Date(date);
 
-            console.log("Booked slots for selected day:", bookedSlotsForDay);
+            // 比較 UTC 日期
+            return bookingDate.toISOString().split('T')[0] === selectedDate.toISOString().split('T')[0];
+        }).map(booking => booking.attributes.Time);
 
-            setBookedSlots(bookedSlotsForDay);
-        }).catch(error => {
-            console.error("Error fetching booked slots:", error);
-        });
-    }
+        console.log("Booked slots for selected day:", bookedSlotsForDay);
+
+        setBookedSlots(bookedSlotsForDay);
+    };
 
     const saveBooking = () => {
         const data = {

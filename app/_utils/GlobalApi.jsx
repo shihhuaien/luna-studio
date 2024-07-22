@@ -15,7 +15,7 @@ const getCategory = () => axiosClient.get('categories?populate=*')
 
 const getEyelash = () => axiosClient.get('eyelash-technicians?populate=*')
 
-const getAllBookings = () => axiosClient.get("/appointments?populate=*");
+const getAllBookings = (params = {}) => axiosClient.get("/appointments", { params: { ...params, populate: "*" } });
 
 const getLasherByCategory = (category) => {
     const url = `/eyelash-technicians?filters[categories][Name][$in]=${category}&populate=*`;
