@@ -112,11 +112,39 @@ function BookAppointment({ eyelasher }) {
     }
 
     const isPastDay = (day) => {
-        return day <= new Date();
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // 清除小時、分鐘、秒和毫秒部分
+
+        // 禁用過去的日期
+        if (day <= today) {
+            return true;
+        }
+
+        // 禁用週五和週日
+        const dayOfWeek = day.getDay();
+        if (dayOfWeek === 5 || dayOfWeek === 0) {
+            return true;
+        }
+
+        return false;
     }
 
     const isTimeSlotBooked = (time) => {
         return bookedSlots.includes(time);
+    }
+
+    const isTimeSlotAvailable = (day, time) => {
+        if (!day || !(day instanceof Date)) {
+            return false;
+        }
+
+        const dayOfWeek = day.getDay();
+
+        if ((dayOfWeek === 3 || dayOfWeek === 6) && time === '2:00 PM') {
+            return false;
+        }
+
+        return !isTimeSlotBooked(time);
     }
 
     return (
@@ -155,9 +183,9 @@ function BookAppointment({ eyelasher }) {
                                         {timeSlot?.map((item, index) => (
                                             <h2
                                                 key={index}
-                                                onClick={() => !isTimeSlotBooked(item.time) && setSelectedTimeSlot(item.time)}
+                                                onClick={() => isTimeSlotAvailable(date, item.time) && setSelectedTimeSlot(item.time)}
                                                 className={`p-2 border cursor-pointer text-center
-                                                ${isTimeSlotBooked(item.time) ? 'bg-gray-300 cursor-not-allowed' : 'hover:bg-primary hover:text-white'}
+                                                ${isTimeSlotBooked(item.time) || !isTimeSlotAvailable(date, item.time) ? 'bg-gray-300 cursor-not-allowed' : 'hover:bg-primary hover:text-white'}
                                                 rounded-full ${item.time == selectedTimeSlot && 'bg-primary text-white'}`}>{item.time}</h2>
                                         ))}
                                     </div>
