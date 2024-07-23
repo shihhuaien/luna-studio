@@ -212,10 +212,7 @@ function BookAppointment({ eyelasher }) {
                                         點選「送出」系統會寄送預約email給您<br />
                                         請於兩天內完成訂金匯款，以保留預約資格
                                     </div>
-                                    <div className='grid grid-cols-1 gap-2 
-                                                    rounded-lg p-3'>
 
-                                    </div>
                                     <div className='grid grid-cols-1 gap-2 
                                                     rounded-lg p-3'>
                                         ♫ 匯款資訊詳見email<br />
