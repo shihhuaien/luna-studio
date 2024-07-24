@@ -170,9 +170,9 @@ function BookAppointment({ eyelasher }) {
             <DialogTrigger asChild>
                 <Button className="mt-3 rounded-full">開始預約</Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="max-h-[90vh] overflow-y-auto" >
                 <DialogHeader>
-                    <DialogTitle>預約系統</DialogTitle>
+                    {/* <DialogTitle>預約系統</DialogTitle> */}
                     <DialogDescription>
                         <div>
                             <div className='grid grid-cols-1 md:grid-cols-2 mt-5'>
@@ -197,24 +197,25 @@ function BookAppointment({ eyelasher }) {
                                         選擇開始時間
                                     </h2>
                                     <div className='grid grid-cols-1 gap-2 border 
-                                                    rounded-lg p-5'>
+                                                    rounded-lg p-3'>
                                         {timeSlot?.map((item, index) => (
                                             <h2
                                                 key={index}
                                                 onClick={() => isTimeSlotAvailable(date, item.time) && setSelectedTimeSlot(item.time)}
                                                 className={`p-2 border cursor-pointer text-center
                                                 ${isTimeSlotBooked(item.time) || !isTimeSlotAvailable(date, item.time) ? 'bg-gray-300 cursor-not-allowed' : 'hover:bg-primary hover:text-white'}
-                                                rounded-full ${item.time == selectedTimeSlot && 'bg-primary text-white'}`}>{item.time}</h2>
+                                                rounded-full ${item.time == selectedTimeSlot && 'bg-primary text-white'}`}>
+                                                {isTimeSlotBooked(item.time) ? `${item.time} (已預約)` : !isTimeSlotAvailable(date, item.time) ? `${item.time} (暫不開放)` : item.time}                                            </h2>
                                         ))}
                                     </div>
                                     <div className='grid grid-cols-1 gap-2 
-                                                    rounded-lg p-3'>
+                                                    rounded-lg p-2'>
                                         點選「送出」系統會寄送預約email給您<br />
                                         請於兩天內完成訂金匯款，以保留預約資格
                                     </div>
 
                                     <div className='grid grid-cols-1 gap-2 
-                                                    rounded-lg p-3'>
+                                                    rounded-lg p-2'>
                                         ♫ 匯款資訊詳見email<br />
                                         ♫ 若需取消預約，可於「我的預約」進行取消
                                     </div>
@@ -226,12 +227,12 @@ function BookAppointment({ eyelasher }) {
                 </DialogHeader>
                 <DialogFooter className="sm:justify-end">
                     <DialogClose asChild>
-                        <Button type="button" className="text-red-500 border-red-500" variant="outline">
+                        <Button type="button" className="text-red-500 border-red-500 m-1" variant="outline">
                             取消
                         </Button>
                     </DialogClose>
                     <DialogClose asChild>
-                        <Button type="button" disabled={!(date && selectedTimeSlot && !isTimeSlotBooked(selectedTimeSlot))} onClick={saveBooking}>
+                        <Button type="button" className="m-1" disabled={!(date && selectedTimeSlot && !isTimeSlotBooked(selectedTimeSlot))} onClick={saveBooking}>
                             送出
                         </Button>
                     </DialogClose>
