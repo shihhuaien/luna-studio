@@ -21,10 +21,10 @@ function BookAppointment({ eyelasher }) {
     // 獲取今天的日期
     const today = new Date();
     // 將日期加一天
-    const tomorrow = new Date(today);
-    tomorrow.setDate(today.getDate() + 1);
+    const threeDaysLater = new Date(today);
+    threeDaysLater.setDate(today.getDate() + 3);
 
-    const [date, setDate] = useState(tomorrow);
+    const [date, setDate] = useState(threeDaysLater);
     const [timeSlot, setTimeSlot] = useState();
     const [selectedTimeSlot, setSelectedTimeSlot] = useState();
     const [note, setNote] = useState();
@@ -44,22 +44,28 @@ function BookAppointment({ eyelasher }) {
 
     const getTime = () => {
         const timeList = [];
-        for (let i = 10; i <= 12; i += 2) {
+        for (let i = 10; i <= 10; i += 2) {
             timeList.push({
                 time: i + ':00 AM'
             })
-            // timeList.push({
-            //     time: i + ':30 AM'
-            // })
+
         }
-        for (let i = 2; i <= 2; i += 2) {
+        for (let i = 1; i <= 1; i += 3) {
             timeList.push({
-                time: i + ':00 PM'
+                time: i + ':30 PM'
             })
             // timeList.push({
             //     time: i + ':30 PM'
             // })
         }
+
+        // //原本的時段14:00pm
+        // for (let i = 2; i <= 2; i += 2) {
+        //     timeList.push({
+        //         time: i + ':00 PM'
+        //     })
+        // }
+
 
         setTimeSlot(timeList)
     }
@@ -133,8 +139,12 @@ function BookAppointment({ eyelasher }) {
         const today = new Date();
         today.setHours(0, 0, 0, 0); // 清除小時、分鐘、秒和毫秒部分
 
-        // 禁用過去的日期
-        if (day <= today) {
+        // 計算三天後的日期
+        const threeDaysLater = new Date(today);
+        threeDaysLater.setDate(today.getDate() + 3);
+
+        // 禁用今天及三天內的日期
+        if (day < threeDaysLater) {
             return true;
         }
 
