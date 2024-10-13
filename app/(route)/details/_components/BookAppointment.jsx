@@ -150,7 +150,7 @@ function BookAppointment({ eyelasher }) {
 
         // 禁用週五和週日
         const dayOfWeek = day.getDay();
-        if (dayOfWeek === 5 || dayOfWeek === 0) {
+        if (dayOfWeek === 5 || dayOfWeek === 0 || dayOfWeek === 6) {
             return true;
         }
 
